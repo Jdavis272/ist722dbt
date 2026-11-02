@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: fact_sales
+    description: Transaction fact table. One row per line item ordered. Includes product data.
+    tests:
+      - dbt_utils.unique_combination_of_columns:
+          combination_of_columns:
+            - orderid
+            - productid
+    columns:
+      - name: orderid
+        description: Degenerate dimension / source key used for drill through
+        tests:
+          - not_null
+      - name: customerkey
+        description: Dimension key for dim_customer
+      - name: employeekey
+        description: Dimension key for dim_employee
+      - name: orderdatekey
+        description: Dimension key for dim_date (order date)
+      - name: productkey
+        description: Dimension key for dim_product
+      - name: quantity
+        description: Additive fact for the quantity of the product on the order
+      - name: extendedpriceamount
+        description: Additive fact for quantity * unit price
+      - name: discountamount
+        description: Additive fact for extended price * discount
+      - name: soldamount
+        description: Additive fact for extended price - discount amount
